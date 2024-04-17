@@ -16,6 +16,16 @@
             "projectName": "holamundo",
             "args": "",
             "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-PrimerawebApplication<primeraweb>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.riwi.primeraweb.PrimerawebApplication",
+            "projectName": "primeraweb",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
         }
     ]
 }
