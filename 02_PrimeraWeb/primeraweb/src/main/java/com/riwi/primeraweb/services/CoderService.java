@@ -20,4 +20,8 @@ public class CoderService {
         return this.objCodersRepository.findAll();
     }
 
+    public Coders insertCoders(Coders objCoders){
+        return this.objCodersRepository.save(objCoders);
+    }
+
 }
