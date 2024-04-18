@@ -2,6 +2,7 @@ package com.riwi.primeraweb.services;
 
 import java.util.List;
 
+import org.aspectj.apache.bcel.classfile.Code;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,4 +25,22 @@ public class CoderService {
         return this.objCodersRepository.save(objCoders);
     }
 
+    public Coders update(Long id,Coders objCoders){
+        Coders objCodersBD = this.findById(id);
+
+        if (objCodersBD == null) return null;
+
+        objCodersBD = objCoders;
+        return this.objCodersRepository.save(objCodersBD);
+    }
+
+    public Coders findById(Long id){
+        return this.objCodersRepository.findById(id).orElse(null);
+    }
+
+    public void deletCoder(Long id){
+        
+        this.objCodersRepository.deleteById(id);
+
+    }
 }

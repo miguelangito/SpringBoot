@@ -36,8 +36,8 @@
             <td th:text="${coder.clan}"></td>
             <td>
               <div class="d-flex gap-2">
-                <a href="" class="btn btn-danger">Delete</a>
-                <a href="" class="btn btn-primary">Edit</a>
+                <a th:href="@{/delete/{id}(id = ${coder.id})}" class="btn btn-danger">Delete</a>
+                <a th:href="@{/update/{id}(id = ${coder.id})}" class="btn btn-primary">Edit</a>
               </div>
             </td>
           </tr>

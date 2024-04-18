@@ -7,5 +7,7 @@ import com.riwi.primeraweb.entity.Coders;
 
 @Repository
 public interface CodersRepository extends JpaRepository<Coders, Long> {
+
+    Coders deleteById(Coders byId);
     
 }

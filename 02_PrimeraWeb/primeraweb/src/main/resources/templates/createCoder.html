@@ -16,6 +16,7 @@
     <h2 class="text-center my-5 fw bold">Create new coder</h2>
 
     <form th:object="${coder}" th:action="${action}" method="post">
+      <input type="hidden" th:field="*{id}" th:value="${coder.id}">
       <div class="form">
         <div class="mb-3">
           <label for="Enter you name" class="form-label">Name</label>
@@ -24,6 +25,7 @@
             class="form-control"
             id="name"
             th:field="*{name}"
+            th:value="${coder.name}"
           />
         </div>
         <div class="mb-3">
@@ -33,6 +35,7 @@
             class="form-control"
             id="age"
             th:field="*{age}"
+            th:value="${coder.age}"
           />
         </div>
         <div class="mb-3">
@@ -42,6 +45,7 @@
             class="form-control"
             id="clan"
             th:field="*{clan}"
+            th:value="${coder.clan}"
           />
         </div>
         <div class="d-flex gap-4">
