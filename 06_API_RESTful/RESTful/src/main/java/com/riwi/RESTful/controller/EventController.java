@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,13 +29,12 @@ public class EventController {
 
     @PostMapping()
     public ResponseEntity<Events> create(@RequestBody Events events){
-        if (events.getCapacity() < 0) {
-            System.out.println("Invalid capacity");
-
-        }else {
-            ResponseEntity.ok(this.eventServices.create(events));
+        if (events.getCapacity() < 1) {
+            return null;
+        }if (events.getDate().isBefore(LocalDate.now())) {
+            return null;
         }
-        return ResponseEntity.noContent().build();
+         return ResponseEntity.ok(this.eventServices.create(events));
     }
 
     @GetMapping(path = "/{id}")
@@ -50,6 +51,11 @@ public class EventController {
     public ResponseEntity<Void> delete(@PathVariable String id){
         this.eventServices.delete(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping(path = "/page/{page}")
+    public ResponseEntity<Page<Events>> showViewGetAll(@PathVariable Integer page) {
+        return ResponseEntity.ok(this.eventServices.findPaginated(PageRequest.of(page, 3)));
     }
 
 }

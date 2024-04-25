@@ -3,6 +3,8 @@ package com.riwi.RESTful.services;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.riwi.RESTful.entity.Events;
@@ -45,6 +47,11 @@ public class EventServices implements  IEventServices {
 
         events.setId(id);
         return this.eventRepository.save(events);
+    }
+
+    @Override
+    public Page<Events> findPaginated(Pageable pageable) {
+        return this.eventRepository.findAll(pageable);
     }
     
     
