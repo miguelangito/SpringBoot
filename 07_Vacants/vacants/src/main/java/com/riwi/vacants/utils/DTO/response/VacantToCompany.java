@@ -1,25 +1,21 @@
 package com.riwi.vacants.utils.DTO.response;
 
-import java.util.List;
-
+import com.riwi.vacants.utils.enums.StatusVacant;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CompanyResponse {
+public class VacantToCompany {
     
-    private String id;
-    private String name;
-    private String location;
-    private String contact;
-    private List<VacantToCompany> vacants;
-
-
+    private Long id;
+    private String title;
+    private String description;
+    private StatusVacant status;
+    
 }
