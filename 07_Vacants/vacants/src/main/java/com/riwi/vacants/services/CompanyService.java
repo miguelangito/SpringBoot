@@ -16,6 +16,7 @@ import com.riwi.vacants.services.interfaces.ICompanyService;
 import com.riwi.vacants.utils.DTO.request.CompanyRequest;
 import com.riwi.vacants.utils.DTO.response.CompanyResponse;
 import com.riwi.vacants.utils.DTO.response.VacantToCompany;
+import com.riwi.vacants.utils.exceptions.IdNotFoundException;
 
 import lombok.AllArgsConstructor;
 
@@ -35,6 +36,10 @@ public class CompanyService implements ICompanyService {
 
     @Override
     public void delete(String id) {
+
+        Company company = this.getId(id);
+
+        this.companyRepository.delete(company);
     }
 
     @Override
@@ -54,7 +59,10 @@ public class CompanyService implements ICompanyService {
 
     @Override
     public CompanyResponse update(CompanyRequest request, String id) {
-        return null;
+        Company companyToUpdate = this.getId(id);
+
+        Company company = this.requestToEntity(request, companyToUpdate);
+        return this.entityToResponse(this.companyRepository.save(company));
     }    
 
     private CompanyResponse entityToResponse(Company entity){
@@ -77,7 +85,6 @@ public class CompanyService implements ICompanyService {
     }
 
     private Company requestToEntity(CompanyRequest entity, Company company){
-        company = new Company();
 
         BeanUtils.copyProperties(entity, company);
         company.setVacantList(new ArrayList<>());
@@ -85,6 +92,7 @@ public class CompanyService implements ICompanyService {
     }
 
     private Company getId(String id){
-        return this.companyRepository.findById(id).orElseThrow();
+        return this.companyRepository.findById(id).orElseThrow(() -> new IdNotFoundException("company"));
+        
     }
 }

@@ -10,7 +10,7 @@ public interface CrudService<RQ, RS, ID> {
 
     RS update(RQ request,ID id);
 
-    Void delete(ID id);
+    void delete(ID id);
 
     RS getById(ID id);
 }
