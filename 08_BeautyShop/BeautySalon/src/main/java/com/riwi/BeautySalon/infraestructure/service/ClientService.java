@@ -1,7 +1,6 @@
 package com.riwi.BeautySalon.infraestructure.service;
 
 import java.util.List;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.BeanUtils;
@@ -22,7 +21,6 @@ import com.riwi.BeautySalon.domain.repositories.ClientRepository;
 import com.riwi.BeautySalon.infraestructure.abstract_service.IClientService;
 import com.riwi.BeautySalon.utils.enums.SortType;
 
-import ch.qos.logback.core.joran.util.beans.BeanUtil;
 import lombok.AllArgsConstructor;
 
 @Service
