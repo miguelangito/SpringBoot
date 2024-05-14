@@ -3,13 +3,16 @@ package com.riwi.beautySalon.infraestructure.helpers;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Function;
 
 import javax.crypto.SecretKey;
 
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import com.riwi.beautySalon.domain.entities.User;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -50,4 +53,37 @@ public class JwtService {
 
         return this.getToken(claims, user);
     } 
+
+    public Claims getAllClaims(String token){
+        return Jwts
+                    .parser()//desarmamos el jwt
+                    .verifyWith(this.getKey())//lo validamos con la fima del servidor
+                    .build()//lo construimos
+                    .parseSignedClaims(token)//convertir de base a json el payload
+                    .getPayload();//extraemos la informacion del payload(cuerpo de jwt)
+    }
+
+    public <T> T getClaim(String token, Function<Claims, T> claimsResolved){
+        final Claims claims = this.getAllClaims(token);
+        return claimsResolved.apply(claims);
+    }
+
+    public String getUsernameFromToken(String token){
+        return this.getClaim(token,Claims::getSubject);
+    }
+
+    public Date getExpiration(String token){
+        return this.getClaim(token,Claims::getExpiration);
+    }
+
+    public boolean isTokenExpired(String token){
+        return this.getExpiration(token).before(new Date());
+    }
+
+    public boolean isTokenValid(String token, UserDetails userDetails){
+        String userName = this.getUsernameFromToken(token);
+
+        return (userName.equals(userDetails.getUsername()) && !this.isTokenExpired(token));
+    
+    }
 }

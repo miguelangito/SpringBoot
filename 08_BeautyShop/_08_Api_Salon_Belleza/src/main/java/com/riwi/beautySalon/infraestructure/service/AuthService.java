@@ -1,6 +1,9 @@
 package com.riwi.beautySalon.infraestructure.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.riwi.beautySalon.api.dto.request.LoginReq;
@@ -24,10 +27,35 @@ public class AuthService implements IAuthService {
 
     @Autowired
     private final JwtService jwtService;
+
+    @Autowired
+    private final PasswordEncoder encoder;
+
+    @Autowired
+    private final AuthenticationManager authenticationManager;
         
     @Override
     public AuthResp login(LoginReq request) {
-        return null;
+        try {
+            authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                    request.getUserName(),
+                    request.getPassword())); 
+        } catch (Exception e) {
+            throw new BadRequestException("Invalid credentials");
+        }
+        
+        User user = this.findByUserName(request.getUserName());
+
+        if (user == null) {
+            throw new BadRequestException("Invalid User");
+        }
+
+        return AuthResp
+                .builder()
+                .message("All correct")
+                .token(this.jwtService.getToken(user))
+                .build();
     }
 
     @Override
@@ -43,7 +71,8 @@ public class AuthService implements IAuthService {
 
        User user = User.builder()
                     .userName(request.getUserName())
-                    .password(request.getPassword())
+                    //Guardar la contraseña codificada
+                    .password(encoder.encode(request.getPassword()))
                     .role(Role.CLIENT)
                     .build();
         
